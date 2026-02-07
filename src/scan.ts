@@ -1,8 +1,6 @@
 import { startAR } from "./ar/startAR";
-import { initPanelUI } from "./ui/panel";
 
-initPanelUI();
-
+// Do NOT call initPanelUI() because the UI already exists in scan.html
 startAR().catch((err) => {
   console.error(err);
   const title = document.getElementById("cardTitle");

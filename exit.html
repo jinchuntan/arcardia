@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <title>ARCardia • Exit</title>
+    <style>
+      :root{
+        --pad: clamp(14px, 2.6vw, 24px);
+        --r: clamp(18px, 2.4vw, 24px);
+        --glass: rgba(15, 18, 35, 0.50);
+        --border: rgba(255,255,255,0.18);
+        --muted: rgba(255,255,255,0.80);
+        --muted2: rgba(255,255,255,0.68);
+        --shadow: 0 22px 80px rgba(0,0,0,0.60);
+
+        --rx: 0deg;
+        --ry: 0deg;
+        --mx: 50%;
+        --my: 30%;
+      }
+
+      *{ box-sizing:border-box; }
+      html, body { height: 100%; }
+      body{
+        margin:0;
+        background:#04050a;
+        color:#fff;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        overflow:hidden;
+        -webkit-text-size-adjust: 100%;
+      }
+
+      .wrap{
+        position:fixed;
+        inset:0;
+        min-height: 100svh;
+        min-height: 100dvh;
+        display:grid;
+        place-items:center;
+        padding:
+          calc(var(--pad) + env(safe-area-inset-top))
+          calc(var(--pad) + env(safe-area-inset-right))
+          calc(var(--pad) + env(safe-area-inset-bottom))
+          calc(var(--pad) + env(safe-area-inset-left));
+        isolation:isolate;
+      }
+
+      /* Background layers */
+      .bg{ position:absolute; inset:0; z-index:0; overflow:hidden; }
+      .hero{
+        position:absolute;
+        inset:-16px;
+        background:
+          radial-gradient(circle at 20% 10%, rgba(0, 255, 255, 0.18), transparent 45%),
+          radial-gradient(circle at 80% 20%, rgba(255, 200, 0, 0.14), transparent 45%),
+          radial-gradient(circle at 55% 85%, rgba(160, 120, 255, 0.18), transparent 55%),
+          url("/brand/hero.png") center/cover no-repeat;
+        filter:saturate(1.06) contrast(1.08);
+        transform: scale(1.05);
+        animation: slowFloat 12s ease-in-out infinite;
+      }
+
+      .blob{
+        position:absolute;
+        width:520px;
+        height:520px;
+        border-radius:999px;
+        filter: blur(54px);
+        opacity:0.33;
+        mix-blend-mode: screen;
+        animation: blobFloat 16s ease-in-out infinite;
+      }
+      .b1{ left:-160px; top:-150px; background: radial-gradient(circle at 30% 30%, rgba(0,220,255,0.9), transparent 60%); }
+      .b2{ right:-200px; top:50px; background: radial-gradient(circle at 30% 30%, rgba(255,190,0,0.85), transparent 60%); animation-duration: 19s; }
+      .b3{ left:42%; bottom:-240px; background: radial-gradient(circle at 30% 30%, rgba(170,120,255,0.85), transparent 60%); animation-duration: 21s; }
+
+      .overlay{
+        position:absolute;
+        inset:0;
+        background: linear-gradient(180deg, rgba(3, 5, 10, 0.35) 0%, rgba(3, 5, 10, 0.80) 60%, rgba(3, 5, 10, 0.94) 100%);
+      }
+
+      .noise{
+        position:absolute;
+        inset:0;
+        background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+        opacity:0.08;
+        mix-blend-mode: overlay;
+        pointer-events:none;
+      }
+
+      @keyframes slowFloat {
+        0%   { transform: scale(1.05) translateY(0px); }
+        50%  { transform: scale(1.05) translateY(-10px); }
+        100% { transform: scale(1.05) translateY(0px); }
+      }
+      @keyframes blobFloat{
+        0% { transform: translate(0px,0px) scale(1); }
+        50% { transform: translate(18px,-14px) scale(1.05); }
+        100% { transform: translate(0px,0px) scale(1); }
+      }
+
+      /* Card */
+      .card{
+        position:relative;
+        z-index:1;
+        width:min(900px, 100%);
+        border-radius: var(--r);
+        border: 1px solid var(--border);
+        background: var(--glass);
+        backdrop-filter: blur(14px);
+        box-shadow: var(--shadow);
+        padding: clamp(18px, 2.8vw, 24px);
+        transform-style: preserve-3d;
+        transform: perspective(1100px) rotateX(var(--rx)) rotateY(var(--ry));
+        transition: transform 180ms ease;
+
+        max-height: calc(100dvh - (2 * var(--pad)) - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+        overflow:auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      /* shine */
+      .card::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        border-radius: inherit;
+        background: radial-gradient(650px circle at var(--mx) var(--my),
+          rgba(255,255,255,0.18),
+          rgba(255,255,255,0.06) 35%,
+          transparent 62%);
+        pointer-events:none;
+        opacity:0.85;
+        transform: translateZ(1px);
+      }
+
+      .topRow{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .brand{
+        display:flex;
+        align-items:center;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .logo{
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        object-fit: contain;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        padding: 6px;
+      }
+
+      .brandText{
+        font-weight: 950;
+        letter-spacing: 0.2px;
+        opacity: 0.95;
+        white-space: nowrap;
+      }
+
+      .badge{
+        display:inline-flex;
+        align-items:center;
+        gap: 8px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.09);
+        border: 1px solid rgba(255,255,255,0.14);
+        font-size: 12px;
+        opacity: 0.95;
+        white-space: nowrap;
+      }
+
+      h1{
+        margin: 16px 0 8px;
+        font-size: clamp(28px, 4vw, 44px);
+        font-weight: 980;
+        line-height: 1.05;
+        letter-spacing: 0.2px;
+      }
+
+      p{
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+        font-size: clamp(14px, 1.9vw, 16px);
+        max-width: 70ch;
+      }
+
+      .grid{
+        margin-top: 16px;
+        display:grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 12px;
+      }
+
+      .box{
+        border-radius: 18px;
+        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(255,255,255,0.06);
+        padding: 14px;
+      }
+
+      .box h2{
+        margin: 0 0 8px;
+        font-size: 12px;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+        opacity: 0.85;
+      }
+
+      .chips{
+        display:flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chip{
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,0.14);
+        background: rgba(0,0,0,0.20);
+        padding: 7px 10px;
+        font-size: 12px;
+        opacity: 0.92;
+        cursor: pointer;
+        user-select:none;
+      }
+      .chip:active{ transform: translateY(1px); }
+
+      .btnRow{
+        display:flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .btn{
+        flex: 1 1 160px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.18);
+        background: rgba(255,255,255,0.08);
+        color:#fff;
+        font-weight: 950;
+        font-size: 14px;
+        cursor:pointer;
+        text-decoration:none;
+        text-align:center;
+        transition: transform 140ms ease, border-color 160ms ease;
+        touch-action: manipulation;
+      }
+      .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,0.28); }
+      .btnPrimary{
+        background: linear-gradient(135deg, rgba(0,180,255,0.42), rgba(160,120,255,0.30));
+      }
+
+      .tiny{
+        margin-top: 10px;
+        font-size: 12px;
+        color: var(--muted2);
+        opacity: 0.9;
+        line-height: 1.45;
+      }
+
+      /* Toast */
+      .toast{
+        position: fixed;
+        left: 50%;
+        bottom: calc(16px + env(safe-area-inset-bottom));
+        transform: translateX(-50%);
+        z-index: 999;
+        padding: 10px 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.18);
+        background: rgba(0,0,0,0.55);
+        backdrop-filter: blur(10px);
+        color: rgba(255,255,255,0.92);
+        font-size: 13px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 180ms ease;
+        max-width: min(720px, calc(100% - 28px));
+        text-align: center;
+      }
+      .toast[data-show="true"]{ opacity: 1; }
+
+      @media (max-width: 860px){
+        .grid{ grid-template-columns: 1fr; }
+      }
+
+      @media (prefers-reduced-motion: reduce){
+        .hero, .blob{ animation:none !important; }
+        .card{ transition:none; transform:none !important; }
+        .btn{ transition:none; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="bg" aria-hidden="true">
+        <div class="hero"></div>
+        <div class="blob b1"></div>
+        <div class="blob b2"></div>
+        <div class="blob b3"></div>
+        <div class="overlay"></div>
+        <div class="noise"></div>
+      </div>
+
+      <main class="card" id="card">
+        <div class="topRow">
+          <div class="brand">
+            <img
+              class="logo"
+              src="/brand/fovea-logo.png"
+              alt="Fovea logo"
+              loading="eager"
+              onerror="this.style.display='none'"
+            />
+            <div class="brandText">Fovea</div>
+          </div>
+          <div class="badge">✨ Thanks for exploring</div>
+        </div>
+
+        <h1>You are all set.</h1>
+        <p>
+          Thanks for using <strong>ARCardia</strong> by Fovea. Your camera feed was used only for real time tracking.
+          Nothing was stored. Come back anytime to scan more cards and grow your collection.
+        </p>
+
+        <div class="grid">
+          <section class="box">
+            <h2>One last thing</h2>
+            <p style="margin:0; color:rgba(255,255,255,0.80); line-height:1.55;">
+              Tap a vibe below. It is a tiny interactive “receipt” just for fun.
+            </p>
+
+            <div class="chips" style="margin-top:10px;">
+              <div class="chip" data-toast="Explorer mode: completed ✅">Explorer mode</div>
+              <div class="chip" data-toast="Tracking tip saved: bright lighting 💡">Tracking tip</div>
+              <div class="chip" data-toast="Collection energy: maximum ✨">Collection energy</div>
+              <div class="chip" data-toast="See you soon 👋">See you soon</div>
+            </div>
+
+            <div class="tiny">
+              Keyboard: Press <strong>Enter</strong> to go Home • Press <strong>Esc</strong> to go Home
+            </div>
+          </section>
+
+          <section class="box">
+            <h2>Next steps</h2>
+            <p style="margin:0; color:rgba(255,255,255,0.80); line-height:1.55;">
+              Want to jump back in, or return to the main page?
+            </p>
+
+            <div class="btnRow" style="margin-top:12px;">
+              <a class="btn btnPrimary" href="/index.html">Back to Home</a>
+              <a class="btn" href="/scan.html">Scan again</a>
+            </div>
+
+            <div class="tiny">
+              Tip: If tracking felt jittery, try less glare and a slightly wider distance from the card.
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <div class="toast" id="toast" data-show="false" role="status" aria-live="polite"></div>
+    </div>
+
+    <script>
+      (function () {
+        const card = document.getElementById("card");
+        const toast = document.getElementById("toast");
+        const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        // 3D tilt + shine
+        if (!prefersReduced) {
+          const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+
+          const onMove = (e) => {
+            const r = card.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width;
+            const y = (e.clientY - r.top) / r.height;
+
+            const ry = clamp((x - 0.5) * 10, -8, 8);
+            const rx = clamp((0.5 - y) * 10, -8, 8);
+
+            card.style.setProperty("--rx", rx.toFixed(2) + "deg");
+            card.style.setProperty("--ry", ry.toFixed(2) + "deg");
+            card.style.setProperty("--mx", (x * 100).toFixed(1) + "%");
+            card.style.setProperty("--my", (y * 100).toFixed(1) + "%");
+          };
+
+          const onLeave = () => {
+            card.style.setProperty("--rx", "0deg");
+            card.style.setProperty("--ry", "0deg");
+            card.style.setProperty("--mx", "50%");
+            card.style.setProperty("--my", "30%");
+          };
+
+          window.addEventListener("pointermove", onMove, { passive: true });
+          card.addEventListener("pointerleave", onLeave, { passive: true });
+        }
+
+        // Toast interaction
+        let tmr = null;
+        const showToast = (msg) => {
+          toast.textContent = msg;
+          toast.setAttribute("data-show", "true");
+          clearTimeout(tmr);
+          tmr = setTimeout(() => toast.setAttribute("data-show", "false"), 1400);
+        };
+
+        document.querySelectorAll("[data-toast]").forEach((el) => {
+          el.addEventListener("click", () => showToast(el.getAttribute("data-toast")));
+        });
+
+        // Keyboard shortcuts
+        window.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === "Escape") {
+            window.location.href = "/index.html";
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -42,8 +42,6 @@
 
       #panel{
         position: absolute;
-
-        /* Safe-area aware top-right anchor */
         top: calc(var(--edge) + env(safe-area-inset-top));
         right: calc(var(--edge) + env(safe-area-inset-right));
 
@@ -77,10 +75,12 @@
         display:flex;
         gap: 8px;
         margin-top: 12px;
-        flex-wrap: wrap; /* prevents overflow on narrow screens */
+        flex-wrap: wrap;
       }
 
-      #panelActions button{
+      /* Buttons + Exit link share the same look */
+      #panelActions button,
+      #panelActions a.btnLink{
         flex: 1 1 110px;
         padding: 10px;
         border-radius: 10px;
@@ -89,12 +89,30 @@
         color:#fff;
         cursor:pointer;
         touch-action: manipulation;
+        text-decoration:none;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        font-weight: 900;
       }
-      #panelActions button:disabled{ opacity: 0.4; cursor:not-allowed; }
+
+      #panelActions button:disabled{
+        opacity: 0.4;
+        cursor:not-allowed;
+      }
+
+      /* Exit styling */
+      #btnExit{
+        border-color: rgba(255,255,255,0.30);
+        background: linear-gradient(135deg, rgba(255,120,0,0.20), rgba(255,0,120,0.16));
+      }
+      #btnExit:hover{
+        border-color: rgba(255,255,255,0.42);
+      }
 
       #panelFooter{ margin-top: 10px; font-size: 12px; opacity: 0.75; }
 
-      /* Phones / tablet portrait: convert panel into a bottom sheet */
+      /* Phones / tablet portrait: bottom sheet */
       @media (max-width: 860px){
         #panel{
           left: calc(var(--edge) + env(safe-area-inset-left));
@@ -102,16 +120,14 @@
           top: auto;
           bottom: calc(var(--edge) + env(safe-area-inset-bottom));
           width: auto;
-
-          /* Don’t cover the whole camera view */
           max-height: min(46dvh, 520px);
         }
       }
 
-      /* Very small phones */
       @media (max-width: 420px){
         #panel{ padding: 12px; }
-        #panelActions button{ flex: 1 1 30%; }
+        #panelActions button,
+        #panelActions a.btnLink{ flex: 1 1 30%; }
       }
     </style>
   </head>
@@ -130,6 +146,9 @@
           <button id="btnPrev" type="button" disabled>Prev</button>
           <button id="btnNext" type="button" disabled>Next</button>
           <button id="btnCollect" type="button" disabled>Collect</button>
+
+          <!-- Exit is a link: simplest + most reliable -->
+          <a id="btnExit" class="btnLink" href="/exit.html">Exit</a>
         </div>
 
         <div id="panelFooter">
@@ -138,6 +157,7 @@
       </div>
     </div>
 
+    <!-- Your AR code -->
     <script type="module" src="/src/scan.ts"></script>
   </body>
 </html>
