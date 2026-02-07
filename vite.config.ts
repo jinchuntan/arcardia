@@ -12,7 +12,8 @@ export default defineConfig({
       input: {
         index: resolve(__dirname, "index.html"),
         welcome: resolve(__dirname, "welcome.html"),
-        scan: resolve(__dirname, "scan.html")
+        scan: resolve(__dirname, "scan.html"),
+        exit: resolve(__dirname, "exit.html"),
       }
     }
   }
