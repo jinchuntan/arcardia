@@ -1,0 +1,19 @@
+{
+  "cards": [
+    {
+      "id": "dog-001",
+      "name": "Dog",
+      "category": "Animals",
+      "targetIndex": 0,
+      "model": "/models/dog.glb",
+      "scale": 0.4,
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "facts": [
+        "Dogs were domesticated from wolves thousands of years ago.",
+        "A dog’s sense of smell can be far stronger than a human’s.",
+        "Dogs communicate using body language, vocal sounds, and scent."
+      ]
+    }
+  ]
+}

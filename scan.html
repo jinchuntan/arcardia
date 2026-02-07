@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ARCardia • Scan</title>
+    <style>
+      html, body { margin:0; height:100%; overflow:hidden; background:#05060a; }
+      canvas, video { display:block; }
+
+      /* Ensure camera video fills screen behind AR canvas */
+      video {
+        position: fixed; inset: 0;
+        width: 100%; height: 100%;
+        object-fit: cover;
+        z-index: 0;
+      }
+      canvas {
+        position: fixed; inset: 0;
+        z-index: 1;
+      }
+
+      /* AR UI */
+      #ar-ui {
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        pointer-events: none;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        color: #fff;
+      }
+
+      #panel {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: min(360px, calc(100% - 32px));
+        max-height: calc(100% - 32px);
+        overflow: auto;
+        background: rgba(0,0,0,0.60);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 14px;
+        padding: 14px;
+        pointer-events: auto;
+        backdrop-filter: blur(8px);
+      }
+
+      #cardTitle { font-weight: 900; font-size: 16px; }
+      #cardCategory { opacity: 0.85; font-size: 13px; margin-top: 2px; }
+      #cardFacts {
+        margin-top: 12px;
+        line-height: 1.45;
+        font-size: 14px;
+        opacity: 0.95;
+        min-height: 44px;
+        white-space: pre-wrap;
+      }
+      #panelActions { display: flex; gap: 8px; margin-top: 12px; }
+      #panelActions button {
+        flex: 1;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,0.25);
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+        cursor: pointer;
+      }
+      #panelActions button:disabled { opacity: 0.4; cursor: not-allowed; }
+      #panelFooter { margin-top: 10px; font-size: 12px; opacity: 0.75; }
+
+      @media (max-width: 720px) {
+        #panel { left: 16px; right: 16px; top: auto; bottom: 16px; width: auto; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="ar-ui">
+      <div id="panel">
+        <div id="panelHeader">
+          <div id="cardTitle">Point at your card…</div>
+          <div id="cardCategory"></div>
+        </div>
+
+        <div id="cardFacts">Waiting for target…</div>
+
+        <div id="panelActions">
+          <button id="btnPrev" type="button" disabled>Prev</button>
+          <button id="btnNext" type="button" disabled>Next</button>
+          <button id="btnCollect" type="button" disabled>Collect</button>
+        </div>
+
+        <div id="panelFooter">
+          <span id="cardStatus">Waiting for target…</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- This should run your existing AR code -->
+    <script type="module" src="/src/scan.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,232 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ARCardia • Welcome</title>
+    <style>
+      html, body { margin:0; height:100%; overflow:hidden; background:#05060a; }
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        color: #fff;
+      }
+
+      #welcome {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+      }
+
+      #welcome::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 20% 10%, rgba(0, 255, 255, 0.18), transparent 45%),
+          radial-gradient(circle at 80% 20%, rgba(255, 200, 0, 0.16), transparent 45%),
+          radial-gradient(circle at 55% 85%, rgba(160, 120, 255, 0.18), transparent 55%),
+          url("/brand/hero.png") center/cover no-repeat;
+        filter: saturate(1.05) contrast(1.05);
+        transform: scale(1.02);
+      }
+
+      #welcome::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(3, 5, 10, 0.58) 0%,
+          rgba(3, 5, 10, 0.78) 55%,
+          rgba(3, 5, 10, 0.92) 100%
+        );
+      }
+
+      .card {
+        position: relative;
+        z-index: 1;
+        width: min(980px, 100%);
+        border-radius: 18px;
+        border: 1px solid rgba(255,255,255,0.18);
+        background: rgba(0,0,0,0.35);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+        overflow: hidden;
+      }
+
+      .top {
+        padding: 22px 22px 14px;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        border-bottom: 1px solid rgba(255,255,255,0.12);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.14);
+        font-size: 12px;
+        opacity: 0.95;
+        white-space: nowrap;
+      }
+
+      .titleWrap { flex: 1; min-width: 0; }
+      .title {
+        font-size: 30px;
+        font-weight: 900;
+        margin: 0;
+        line-height: 1.1;
+      }
+      .subtitle {
+        margin: 6px 0 0;
+        opacity: 0.9;
+        font-size: 14px;
+        line-height: 1.35;
+      }
+
+      .body {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+
+      .how { padding: 18px 22px 22px; }
+      .how h2 {
+        margin: 0 0 10px;
+        font-size: 14px;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+        opacity: 0.85;
+      }
+
+      .steps { display: grid; gap: 10px; }
+      .step {
+        display: grid;
+        grid-template-columns: 34px 1fr;
+        gap: 10px;
+        align-items: start;
+        padding: 12px;
+        border-radius: 14px;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.12);
+      }
+      .num {
+        width: 34px; height: 34px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-weight: 900;
+        background: rgba(0, 180, 255, 0.14);
+        border: 1px solid rgba(0, 180, 255, 0.28);
+      }
+      .stepTitle { margin: 0; font-weight: 800; font-size: 14px; }
+      .stepDesc { margin: 4px 0 0; opacity: 0.9; font-size: 13px; line-height: 1.35; }
+
+      .cta {
+        padding: 18px 22px 22px;
+        border-left: 1px solid rgba(255,255,255,0.12);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .ctaBox {
+        padding: 14px;
+        border-radius: 14px;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.12);
+      }
+
+      .ctaBox h3 { margin: 0 0 6px; font-size: 14px; font-weight: 900; }
+      .ctaBox p { margin: 0; font-size: 13px; opacity: 0.9; line-height: 1.35; }
+
+      .btnRow { display: flex; gap: 10px; }
+      .btn {
+        flex: 1;
+        padding: 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.18);
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+        font-weight: 900;
+        font-size: 14px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+      }
+      .btnPrimary {
+        background: linear-gradient(135deg, rgba(0,180,255,0.40), rgba(160,120,255,0.28));
+      }
+
+      .tiny { font-size: 12px; opacity: 0.75; line-height: 1.35; }
+
+      @media (max-width: 720px) {
+        .body { grid-template-columns: 1fr; }
+        .cta { border-left: 0; border-top: 1px solid rgba(255,255,255,0.12); }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="welcome">
+      <div class="card">
+        <div class="top">
+          <div class="badge">WebAR x Collect x Learn</div>
+          <div class="titleWrap">
+            <h1 class="title">Welcome to ARCardia</h1>
+            <p class="subtitle">Before we start scanning, here is a quick guide to get the best results.</p>
+          </div>
+          <div class="badge">Fovea Edition</div>
+        </div>
+
+        <div class="body">
+          <div class="how">
+            <h2>How to scan</h2>
+            <div class="steps">
+              <div class="step">
+                <div class="num">1</div>
+                <div>
+                  <p class="stepTitle">Allow camera</p>
+                  <p class="stepDesc">When prompted, tap Allow. Your camera is used only for tracking and is not stored.</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="num">2</div>
+                <div>
+                  <p class="stepTitle">Fill the frame</p>
+                  <p class="stepDesc">Hold the card steady and let it fill around 30 to 60 percent of the view.</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="num">3</div>
+                <div>
+                  <p class="stepTitle">Good lighting</p>
+                  <p class="stepDesc">Avoid glare. Bright, even lighting helps the card detect faster.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cta">
+            <div class="ctaBox">
+              <h3>Quick tip</h3>
+              <p>Start with one card. Once it detects consistently, we add more cards and build your collection flow.</p>
+            </div>
+
+            <div class="btnRow">
+              <a class="btn" href="/index.html">Back</a>
+              <a class="btn btnPrimary" href="/scan.html">Start scanning</a>
+            </div>
+
+            <div class="tiny">If detection is slow: move closer, reduce reflections, and keep the card flat to the camera.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
