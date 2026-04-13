@@ -11,6 +11,7 @@ type CardDef = {
   id: string;
   name: string;
   category?: string;
+  enabled?: boolean;
   targetIndex: number;
   model: string;
   scale?: number;
@@ -29,7 +30,9 @@ export async function startAR() {
     throw new Error(`Missing ${mindFile}. Put it at public/targets/cards.mind`);
   }
 
-  const cards = (cardsData as any).cards as CardDef[];
+  const cards = ((cardsData as any).cards as CardDef[])
+    .filter((card) => card.enabled !== false)
+    .sort((a, b) => a.targetIndex - b.targetIndex);
   if (!cards?.length) throw new Error("cards.json has no cards");
 
   const mindarThree = new MindARThree({

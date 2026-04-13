@@ -1,38 +1,41 @@
 {
   "cards": [
     {
-      "id": "mixue-001",
-      "name": "mixue-snow-king",
-      "category": "Animals",
-      "targetIndex": 0,
-      "model": "/models/mixue_snow_king.glb",
-      "scale": 0.1,
-      "position": [0, 0, 0],
-      "rotation": [0, 0, 0],
-      "facts": [
-        "Mixue Snow King",
-        "Gives Diabetes to Everyone",
-        "Nathan is obsessed with this guy"
-      ]
-    },
-    {
       "id": "cat-001",
       "name": "Cat",
+      "enabled": true,
       "category": "Animals",
-      "targetIndex": 1,
+      "targetIndex": 0,
       "model": "/models/cat.glb",
       "scale": 0.4,
       "position": [0, 0, 0],
       "rotation": [0, 0, 0],
       "facts": [
-        "Cats have retractable claws.",
-        "Cats sleep an average of 12 to 16 hours per day.",
-        "A cat’s whiskers help it judge tight spaces."
+        "Cats are small domesticated mammals known for their agility and balance.",
+        "Most cats sleep for long hours each day to conserve energy.",
+        "A cat's whiskers help it sense nearby objects and judge tight spaces."
+      ]
+    },
+    {
+      "id": "cow-001",
+      "name": "Cow",
+      "enabled": true,
+      "category": "Animals",
+      "targetIndex": 1,
+      "model": "/models/cow.glb",
+      "scale": 0.2,
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "facts": [
+        "Cows are domesticated farm animals raised in many parts of the world.",
+        "They are herbivores and mainly eat grass, hay, and other plant-based food.",
+        "Cows are important in agriculture because they provide milk and support food production."
       ]
     },
     {
       "id": "dog-001",
       "name": "Dog",
+      "enabled": true,
       "category": "Animals",
       "targetIndex": 2,
       "model": "/models/dog.glb",
@@ -40,9 +43,57 @@
       "position": [0, 0, 0],
       "rotation": [0, 0, 0],
       "facts": [
-        "Dogs were domesticated from wolves thousands of years ago.",
-        "A dog’s sense of smell can be far stronger than a human.",
-        "Dogs communicate using body language, vocal sounds, and scent."
+        "Dogs are domesticated mammals that have lived alongside humans for thousands of years.",
+        "A dog's sense of smell is much stronger than a human's.",
+        "Dogs communicate through body language, vocal sounds, and facial expressions."
+      ]
+    },
+    {
+      "id": "elephant-001",
+      "name": "Baby Elephant",
+      "enabled": true,
+      "category": "Animals",
+      "targetIndex": 3,
+      "model": "/models/elephant.glb",
+      "scale": 0.2,
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "facts": [
+        "Elephants are the largest land animals and are known for their long trunks.",
+        "An elephant's trunk is used for breathing, smelling, touching, and picking up objects.",
+        "Elephants live in social groups and are known for strong memory and communication."
+      ]
+    },
+    {
+      "id": "mixue-001",
+      "name": "Mixue Snow King",
+      "enabled": true,
+      "category": "Mascot",
+      "targetIndex": 4,
+      "model": "/models/mixue.glb",
+      "scale": 0.1,
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "facts": [
+        "Mixue Snow King is the mascot of Mixue Ice Cream and Tea.",
+        "The character is designed with a crown, cape, and snowman-like appearance.",
+        "Brand mascots help create a strong visual identity and make products more memorable."
+      ]
+    },
+    {
+      "id": "monkey-001",
+      "name": "Monkey",
+      "enabled": true,
+      "category": "Animals",
+      "targetIndex": 5,
+      "model": "/models/monkey.glb",
+      "scale": 0.25,
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "facts": [
+        "Monkeys are primates known for their intelligence and ability to climb.",
+        "Many monkeys use their hands, feet, and tails to move through trees and hold objects.",
+        "They often live in groups and communicate using sounds, facial expressions, and movement."
       ]
     }
   ]
