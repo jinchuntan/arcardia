@@ -20,6 +20,14 @@ type CardDef = {
   facts?: string[];
 };
 
+const TRACKING_CONFIG = {
+  maxTrack: 1,
+  filterMinCF: 0.0001,
+  filterBeta: 1000,
+  warmupTolerance: 8,
+  missTolerance: 10
+} as const;
+
 export async function startAR() {
   // Ensure panel listeners are ready
   initPanelUI();
@@ -38,7 +46,7 @@ export async function startAR() {
   const mindarThree = new MindARThree({
     container: document.body,
     imageTargetSrc: mindFile,
-    maxTrack: 1
+    ...TRACKING_CONFIG
   });
 
   const { renderer, scene, camera } = mindarThree;
@@ -63,7 +71,11 @@ export async function startAR() {
     anchor.onTargetFound = async () => {
       showCardInPanel(card);
 
-      if (loadedByAnchor.has(anchor)) return;
+      const existing = loadedByAnchor.get(anchor);
+      if (existing) {
+        existing.visible = true;
+        return;
+      }
 
       try {
         const obj = await loadGLB(card.model);
@@ -88,8 +100,7 @@ export async function startAR() {
 
       const obj = loadedByAnchor.get(anchor);
       if (obj) {
-        anchor.group.remove(obj);
-        loadedByAnchor.delete(anchor);
+        obj.visible = false;
       }
     };
   });
@@ -97,11 +108,6 @@ export async function startAR() {
   await mindarThree.start();
 
   renderer.setAnimationLoop(() => {
-    // Optional: slight rotation of any loaded object
-    loadedByAnchor.forEach((obj) => {
-      obj.rotation.y += 0.01;
-    });
-
     renderer.render(scene, camera);
   });
 }
