@@ -22,10 +22,10 @@ type CardDef = {
 
 const TRACKING_CONFIG = {
   maxTrack: 1,
-  filterMinCF: 0.0001,
+  filterMinCF: 0.001,
   filterBeta: 1000,
-  warmupTolerance: 8,
-  missTolerance: 10
+  warmupTolerance: 3,
+  missTolerance: 8
 } as const;
 
 export async function startAR() {
@@ -83,7 +83,9 @@ export async function startAR() {
         obj.scale.setScalar(card.scale ?? 1);
 
         const [px, py, pz] = card.position ?? [0, 0, 0];
-        obj.position.set(px, py, pz);
+        obj.position.x += px;
+        obj.position.y += py;
+        obj.position.z += pz;
 
         const [rx, ry, rz] = card.rotation ?? [0, 0, 0];
         obj.rotation.set(rx, ry, rz);
