@@ -20,6 +20,14 @@ type CardDef = {
   facts?: string[];
 };
 
+const TRACKING_CONFIG = {
+  maxTrack: 1,
+  filterMinCF: 0.001,
+  filterBeta: 1000,
+  warmupTolerance: 3,
+  missTolerance: 8
+} as const;
+
 export async function startAR() {
   // Ensure panel listeners are ready
   initPanelUI();
@@ -38,7 +46,7 @@ export async function startAR() {
   const mindarThree = new MindARThree({
     container: document.body,
     imageTargetSrc: mindFile,
-    maxTrack: 1
+    ...TRACKING_CONFIG
   });
 
   const { renderer, scene, camera } = mindarThree;
@@ -63,7 +71,11 @@ export async function startAR() {
     anchor.onTargetFound = async () => {
       showCardInPanel(card);
 
-      if (loadedByAnchor.has(anchor)) return;
+      const existing = loadedByAnchor.get(anchor);
+      if (existing) {
+        existing.visible = true;
+        return;
+      }
 
       try {
         const obj = await loadGLB(card.model);
@@ -71,7 +83,9 @@ export async function startAR() {
         obj.scale.setScalar(card.scale ?? 1);
 
         const [px, py, pz] = card.position ?? [0, 0, 0];
-        obj.position.set(px, py, pz);
+        obj.position.x += px;
+        obj.position.y += py;
+        obj.position.z += pz;
 
         const [rx, ry, rz] = card.rotation ?? [0, 0, 0];
         obj.rotation.set(rx, ry, rz);
@@ -88,8 +102,7 @@ export async function startAR() {
 
       const obj = loadedByAnchor.get(anchor);
       if (obj) {
-        anchor.group.remove(obj);
-        loadedByAnchor.delete(anchor);
+        obj.visible = false;
       }
     };
   });
@@ -97,11 +110,6 @@ export async function startAR() {
   await mindarThree.start();
 
   renderer.setAnimationLoop(() => {
-    // Optional: slight rotation of any loaded object
-    loadedByAnchor.forEach((obj) => {
-      obj.rotation.y += 0.01;
-    });
-
     renderer.render(scene, camera);
   });
 }
